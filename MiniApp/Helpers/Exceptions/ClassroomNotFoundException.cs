@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace MiniApp.Helpers.Exceptions
 {
-    internal class ClassroomNotFoundException
+    public class ClassroomNotFoundException:Exception
     {
+        public ClassroomNotFoundException(string message) : base(message) { }
     }
 }
