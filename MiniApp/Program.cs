@@ -301,6 +301,7 @@ public class Program
     private static void UpdateStudentOrClassroom()
     {
         string classroomsPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "Jsons", "classroom.json");
+        LoadData(classroomsPath);
 
         Console.WriteLine("Choose what to update:");
         Console.WriteLine("1. Classroom");

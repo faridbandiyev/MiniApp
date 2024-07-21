@@ -3,13 +3,7 @@
     "Id": 1,
     "Name": "PB303",
     "Type": 0,
-    "Students": [
-      {
-        "Id": 1,
-        "Name": "Farid",
-        "Surname": "Bandiyev"
-      }
-    ]
+    "Students": []
   },
   {
     "Id": 2,
