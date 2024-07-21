@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MiniApp.Helpers.Exceptions
 {
-    internal class StudentNotFoundException:Exception
+    public class StudentNotFoundException:Exception
     {
         public StudentNotFoundException(string message) : base(message) { }
     }

@@ -11,12 +11,12 @@ namespace MiniApp;
 
 public class Classroom
 {
-    private static int _id = 0;
+    private static int _id = 1;
     public int Id { get; }
     public string Name { get; set; }
     public ClassroomType Type { get; set; }
     private int Capacity { get; set; }
-    List<Student> Students;
+    public List<Student> Students { get; private set; }
 
     public Classroom(string name, ClassroomType type)
     {
@@ -24,7 +24,7 @@ public class Classroom
         {
             throw new Exception("Name must consist of 5 chracters; of which first 2 have to be capital, while the rest has to be only digits.");
         }
-        Id = ++_id;
+        Id = _id++;
         Name = name;
         Type = type;
         Students = new List<Student>();
@@ -60,5 +60,8 @@ public class Classroom
         var student = FindId(id);
         Students.Remove(student);
     }
+
+    public List<Student> GetStudents()
+    => Students;
 
 }

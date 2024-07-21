@@ -1,0 +1,26 @@
+[
+  {
+    "Id": 1,
+    "Name": "PB303",
+    "Type": 0,
+    "Students": [
+      {
+        "Id": 1,
+        "Name": "Farid",
+        "Surname": "Bandiyev"
+      }
+    ]
+  },
+  {
+    "Id": 2,
+    "Name": "PB304",
+    "Type": 1,
+    "Students": [
+      {
+        "Id": 2,
+        "Name": "Musa",
+        "Surname": "Muradli"
+      }
+    ]
+  }
+]
