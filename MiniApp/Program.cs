@@ -65,14 +65,13 @@ public class Program
 
     private static void LoadData(string filePath)
     {
-        if (File.Exists(filePath))
+
+        using (StreamReader reader = new StreamReader(filePath))
         {
-            using (StreamReader reader = new StreamReader(filePath))
-            {
-                var jsonData = reader.ReadToEnd();
-                classrooms = JsonConvert.DeserializeObject<List<Classroom>>(jsonData) ?? new List<Classroom>();
-            }
+            var jsonData = reader.ReadToEnd();
+            classrooms = JsonConvert.DeserializeObject<List<Classroom>>(jsonData);
         }
+
     }
 
     private static void SaveData(string path)
