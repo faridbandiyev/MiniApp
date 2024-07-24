@@ -85,6 +85,11 @@ public class Program
 
     private static void CreateClassroom()
     {
+        if (classrooms == null)
+        {
+            classrooms = new List<Classroom>();
+        }
+
         while (true)
         {
             Console.Write("Enter classroom name (2 uppercase letters followed by 3 digits): ");
@@ -151,7 +156,7 @@ public class Program
 
     private static void CreateStudent()
     {
-        if (classrooms.Count == 0)
+        if (classrooms == null || classrooms.Count == 0)
         {
             Console.WriteLine("No classrooms available. Create a classroom first.");
             return;
@@ -180,13 +185,18 @@ public class Program
             }
 
             bool studentExists = false;
-            foreach (var student in classroom.GetStudents())
+
+            var students = classroom.GetStudents();
+            if (students != null)
             {
-                if (student.Name.ToLower() == name.ToLower() &&
-                    student.Surname.ToLower() == surname.ToLower())
+                foreach (var student in students)
                 {
-                    studentExists = true;
-                    break;
+                    if (student.Name.ToLower() == name.ToLower() &&
+                        student.Surname.ToLower() == surname.ToLower())
+                    {
+                        studentExists = true;
+                        break;
+                    }
                 }
             }
 
@@ -213,18 +223,38 @@ public class Program
 
     private static void DisplayAllStudents()
     {
+        if (classrooms == null || classrooms.Count == 0)
+        {
+            Console.WriteLine("No classrooms available.");
+            return;
+        }
+
         foreach (var classroom in classrooms)
         {
             Console.WriteLine($"Classroom ID: {classroom.Id}, Name: {classroom.Name} (Type: {classroom.Type}):");
-            foreach (var student in classroom.GetStudents())
+            var students = classroom.GetStudents();
+            if (students == null || students.Count == 0)
             {
-                Console.WriteLine($"  Student ID: {student.Id}, Name: {student.Name}, Surname: {student.Surname}");
+                Console.WriteLine("  No students in this classroom.");
+            }
+            else
+            {
+                foreach (var student in students)
+                {
+                    Console.WriteLine($"  Student ID: {student.Id}, Name: {student.Name}, Surname: {student.Surname}");
+                }
             }
         }
     }
 
     private static void DisplayClassroomStudents()
     {
+        if (classrooms == null || classrooms.Count == 0)
+        {
+            Console.WriteLine("No classrooms available.");
+            return;
+        }
+
         DisplayAllClassrooms();
         Console.Write("Enter classroom ID: ");
         if (int.TryParse(Console.ReadLine(), out int classroomId))
@@ -233,9 +263,17 @@ public class Program
             if (classroom != null)
             {
                 Console.WriteLine($"Classroom {classroom.Name} (Type: {classroom.Type}):");
-                foreach (var student in classroom.GetStudents())
+                var students = classroom.GetStudents();
+                if (students == null || students.Count == 0)
                 {
-                    Console.WriteLine($"  {student.Name} {student.Surname}");
+                    Console.WriteLine("  No students in this classroom.");
+                }
+                else
+                {
+                    foreach (var student in students)
+                    {
+                        Console.WriteLine($"  {student.Name} {student.Surname}");
+                    }
                 }
             }
             else
@@ -251,12 +289,30 @@ public class Program
 
     private static void DeleteStudent()
     {
+        if (classrooms == null || classrooms.Count == 0)
+        {
+            Console.WriteLine("No classrooms available.");
+            return;
+        }
+
+        bool studentsAvailable = false;
         foreach (var classroom in classrooms)
         {
-            foreach (var student in classroom.GetStudents())
+            var students = classroom.GetStudents();
+            if (students != null && students.Count > 0)
             {
-                Console.WriteLine($"Student ID: {student.Id}, Name: {student.Name} {student.Surname}, Classroom: {classroom.Name}");
+                studentsAvailable = true;
+                foreach (var student in students)
+                {
+                    Console.WriteLine($"Student ID: {student.Id}, Name: {student.Name} {student.Surname}, Classroom: {classroom.Name}");
+                }
             }
+        }
+
+        if (!studentsAvailable)
+        {
+            Console.WriteLine("No students available.");
+            return;
         }
 
         Console.Write("Enter student ID to delete: ");
@@ -291,6 +347,12 @@ public class Program
 
     private static void DisplayAllClassrooms()
     {
+        if (classrooms == null || classrooms.Count == 0)
+        {
+            Console.WriteLine("No classrooms available.");
+            return;
+        }
+
         foreach (var classroom in classrooms)
         {
             Console.WriteLine($"Classroom ID: {classroom.Id}, Name: {classroom.Name}, Type: {classroom.Type}");
@@ -300,7 +362,12 @@ public class Program
     private static void UpdateStudentOrClassroom()
     {
         string classroomsPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "Jsons", "classroom.json");
-        LoadData(classroomsPath);
+
+        if (classrooms == null || classrooms.Count == 0)
+        {
+            Console.WriteLine("No classrooms available.");
+            return;
+        }
 
         Console.WriteLine("Choose what to update:");
         Console.WriteLine("1. Classroom");
@@ -319,14 +386,10 @@ public class Program
                 Console.WriteLine("Invalid choice.");
                 break;
         }
-
-        SaveData(classroomsPath);
     }
 
     private static void UpdateClassroom()
     {
-        DisplayAllClassrooms();
-
         Console.Write("Enter the ID of the classroom to update: ");
         if (int.TryParse(Console.ReadLine(), out int classroomId))
         {
@@ -381,8 +444,15 @@ public class Program
         }
     }
 
+
     private static void UpdateStudent()
     {
+        if (classrooms == null || classrooms.Count == 0)
+        {
+            Console.WriteLine("No classrooms available.");
+            return;
+        }
+
         DisplayAllStudents();
 
         Console.Write("Enter the ID of the student to update: ");
